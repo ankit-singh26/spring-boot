@@ -1,13 +1,13 @@
 package com.example.notes.controller;
 
+import com.example.notes.dto.CategoryDTO;
 import com.example.notes.model.Category;
 import com.example.notes.repository.CategoryRepository;
+
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/api/categories")
@@ -18,14 +18,14 @@ public class CategoryController {
         this.categoryRepository = categoryRepository;
     }
 
+    @PostMapping
+    public Category createCategory(@Valid @RequestBody CategoryDTO dto) {
+        Category category = new Category(dto.getName());
+        return categoryRepository.save(category);
+    }
+
     @GetMapping
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
-
-    @PostMapping
-    public Category create(@RequestBody Category category) {
-        return categoryRepository.save(category);
-    }
-    
 }
