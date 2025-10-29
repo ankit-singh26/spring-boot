@@ -9,6 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/posts/{postId}/comments")
@@ -22,6 +26,7 @@ public class CommentController {
         this.commentRepo = commentRepo;
     }
 
+    @Operation(summary = "Create a new comment", description = "Requires JWT authentication.")
     @PostMapping
     public Comment create(@PathVariable Long postId, @Valid @RequestBody CommentDTO dto) {
         BlogPost post = postRepo.findById(postId)
@@ -33,11 +38,13 @@ public class CommentController {
         return commentRepo.save(comment);
     }
 
+    @Operation(summary = "List comments for a specific blog post")
     @GetMapping
     public Page<Comment> list(@PathVariable Long postId, Pageable pageable) {
         return commentRepo.findByPostId(postId, pageable);
     }
 
+    @Operation(summary = "Get a specific comment by ID")
     @PutMapping("/{commentId}")
     public Comment update(@PathVariable Long postId, @PathVariable Long commentId,
                           @Valid @RequestBody CommentDTO dto) {
@@ -48,6 +55,7 @@ public class CommentController {
         return commentRepo.save(comment);
     }
 
+    @Operation(summary = "Delete a specific comment by ID")
     @DeleteMapping("/{commentId}")
     public void delete(@PathVariable Long postId, @PathVariable Long commentId) {
         commentRepo.deleteById(commentId);

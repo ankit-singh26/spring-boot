@@ -1,10 +1,12 @@
 package com.example.blog.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
+@Schema(description = "A comment on a blog post.")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
